@@ -4,115 +4,134 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>New Year’s Wedding — Seating Chart</title>
-  <meta name="description" content="Seating chart listing 130 guests, 10 per table, styled for quick sharing and printing." />
+  <meta name="description" content="Find your table by searching your name. 13 tables, 10 guests per table." />
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
   <style>
-    :root {
-      --bg: #0b0f18;
-      --panel: #121829;
-      --ink: #e6eaf2;
-      --muted: #aab6d6;
-      --accent: #9bdbff;
-      --ring: rgba(155,219,255,.35);
+    :root{
+      /* Dark luxe palette inspired by the reference */
+      --bg: #0b0b0e;            /* near-black */
+      --bg-2: #141217;          /* deep charcoal */
+      --panel: #151821;         /* slate card */
+      --ink: #f7fafc;           /* off-white */
+      --muted: #aeb6c9;         /* cool gray */
+      --gold: #f0c75e;          /* warm gold */
+      --gold-strong: #d6a431;   /* richer gold */
+      --gold-soft: rgba(240,199,94,.14);
+      --ring: rgba(240,199,94,.35);
+      --line: #26314b;          /* subtle border */
     }
-    * { box-sizing: border-box; }
-    html, body { height: 100%; }
-    body {
-      margin: 0; font-family: Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial, "Apple Color Emoji", "Segoe UI Emoji";
-      color: var(--ink); background: radial-gradient(1200px 600px at 80% -100px, #203055 0, transparent 60%),
-              radial-gradient(1000px 400px at 10% -120px, #19304a 0, transparent 60%), var(--bg);
-      -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale;
+    *{box-sizing:border-box}
+    html,body{height:100%}
+    body{
+      margin:0; font-family:Inter, system-ui, -apple-system, Segoe UI, Roboto, "Helvetica Neue", Arial;
+      color:var(--ink);
+      background:
+        radial-gradient(1200px 520px at 85% 15%, rgba(240,199,94,.16), transparent 55%),
+        radial-gradient(900px 420px at 15% -10%, rgba(240,199,94,.08), transparent 60%),
+        linear-gradient(180deg, var(--bg-2), var(--bg));
+      -webkit-font-smoothing:antialiased; -moz-osx-font-smoothing:grayscale;
     }
-    header { padding: 2.5rem 1.25rem 0.75rem; text-align: center; }
-    h1 { margin: 0; font-size: clamp(1.5rem, 2.5vw, 2.25rem); font-weight: 800; letter-spacing: 0.3px; }
-    .sub { margin-top: .4rem; color: var(--muted); font-weight: 600; font-size: .95rem; }
 
-    .wrap { max-width: 1200px; margin: 1.25rem auto 3rem; padding: 0 1rem; }
+    /* Top bar */
+    .topbar{
+      position:sticky; top:0; z-index:10;
+      background:#1a1a22;
+      border-bottom:1px solid #242637;
+      backdrop-filter:saturate(120%) blur(6px);
+    }
+    .topbar-inner{ max-width:1200px; margin:0 auto; padding:.8rem 1rem; display:flex; gap:1rem; align-items:center; justify-content:space-between; }
+    .brand{ display:flex; align-items:center; gap:.6rem; font-weight:800; letter-spacing:.3px; }
+    .brand .dot{ width:10px; height:10px; border-radius:999px; background:linear-gradient(180deg, var(--gold), var(--gold-strong)); box-shadow:0 0 18px rgba(240,199,94,.6); }
+    .brand span{ color:var(--ink); }
 
-    .controls { display:flex; gap:.75rem; justify-content:center; align-items:center; flex-wrap:wrap; margin: 0 auto 1rem; }
-    .controls input[type="text"]{ width:min(560px,90vw); background:#0f1524; border:1px solid #24314f; color:var(--ink); padding:.6rem .8rem; border-radius:.75rem; outline:none; }
-    .controls input[type="text"]:focus{ box-shadow:0 0 0 6px var(--ring); border-color:#39518a; }
-    .controls button { background: linear-gradient(180deg, #1d2b4a, #15213a); border:1px solid #2a3a60; color:var(--ink); padding:.55rem .9rem; border-radius:.75rem; cursor:pointer; font-weight:600; }
-    .controls button:hover{ filter:brightness(1.05); }
+    .search{ display:flex; align-items:center; gap:.5rem; flex: 1 1 auto; max-width:560px; }
+    .search input{
+      width:100%; background:#0e1120; border:1px solid #2a2f47; color:var(--ink);
+      padding:.65rem .9rem .65rem 2.15rem; border-radius:.8rem; outline:none; font-size:1rem;
+      background-image:url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="%23aeb6c9" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>');
+      background-repeat:no-repeat; background-position:.65rem center;
+    }
+    .search input:focus{ box-shadow:0 0 0 6px var(--ring); border-color:#3a4f7d }
+    .search button{ background:transparent; color:var(--ink); border:1px solid #2a2f47; padding:.6rem .95rem; border-radius:.8rem; cursor:pointer; font-weight:700 }
+    .search button:hover{ border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-soft) }
+    .search .clear{ border-color:#343a55; }
 
-    .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1rem; }
+    header{ padding:2.2rem 1.25rem .75rem; text-align:center; position:relative; }
+    header:after{ content:''; position:absolute; inset:auto 0 0 0; height:3px; background:linear-gradient(90deg, transparent, var(--gold), transparent); opacity:.35; }
+    h1{ margin:0; font-size:clamp(1.6rem,2.6vw,2.4rem); font-weight:800; letter-spacing:.3px; }
+    h1 .accent{ color:var(--gold); text-shadow:0 0 22px rgba(240,199,94,.35); }
+    .sub{ margin-top:.45rem; color:var(--muted); font-weight:600; font-size:.95rem }
 
-    .card { background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(0,0,0,0.06)) , var(--panel);
-      border: 1px solid #253150; border-radius: 16px; padding: 1rem; box-shadow: 0 6px 32px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,0.03); }
-    .card h2 { margin: 0 0 .6rem; font-size: 1.05rem; letter-spacing: .2px; font-weight: 800; display:flex; align-items:center; gap:.5rem; }
-    .card h2 .pill { font-size:.7rem; font-weight:700; padding:.2rem .45rem; border-radius:999px; border:1px solid #2b3d64; color: var(--accent); background: rgba(155,219,255,.06); }
-    ol { list-style: none; margin: 0; padding: 0; display:grid; grid-template-columns: 1fr; gap: .35rem; }
-    li { padding:.4rem .55rem; border-radius: 9px; background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.06); }
-    .muted { color: var(--muted); }
+    .wrap{ max-width:1200px; margin:1.25rem auto 3rem; padding:0 1rem }
 
-    footer { text-align:center; color: var(--muted); font-size: .8rem; padding: 2rem 1rem 3rem; }
+    /* Cards grid */
+    .grid{ display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:1rem; margin-bottom:1rem }
+    .card{
+      background: radial-gradient(400px 160px at 85% 10%, rgba(240,199,94,.08), rgba(0,0,0,0)), var(--panel);
+      border:1px solid var(--line); border-radius:16px; padding:1rem; box-shadow:0 10px 28px rgba(0,0,0,.35), inset 0 0 0 1px rgba(255,255,255,0.02);
+    }
+    .card h2{ margin:0 0 .6rem; font-size:1.05rem; letter-spacing:.2px; font-weight:800; display:flex; align-items:center; justify-content:space-between; gap:.5rem }
+    .card h2 .title{ color:var(--ink) }
+    .card h2 .pill{ font-size:.7rem; font-weight:800; padding:.2rem .55rem; border-radius:999px; border:1px solid rgba(240,199,94,.45); color:var(--gold); background:var(--gold-soft) }
+    ol{ list-style:none; margin:0; padding:0; display:grid; grid-template-columns:1fr; gap:.35rem }
+    li{ padding:.45rem .6rem; border-radius:9px; background:rgba(255,255,255,0.03); border:1px solid rgba(255,255,255,0.06) }
+    li:hover{ border-color:rgba(240,199,94,.45); background:rgba(240,199,94,.06) }
 
-    /* Print styles */
-    @media print {
-      body { background: #fff; color: #000; }
-      header, .controls, footer { display:none; }
-      .wrap { max-width: 100%; margin: 0; padding: 0; }
-      .grid { gap: .5rem; grid-template-columns: repeat(3, 1fr); }
-      .card { break-inside: avoid; page-break-inside: avoid; box-shadow: none; background: #fff; border: 1px solid #ccc; }
-      .card h2 { color:#000; }
-      li { background: #fff; border-color: #ddd; }
+    mark{ background:#fff1a6; color:#000; padding:0 .15rem; border-radius:4px }
+    .muted{ color:var(--muted) }
+    footer{ text-align:center; color:var(--muted); font-size:.8rem; padding:2rem 1rem 3rem }
+
+    @media print{
+      .topbar, header, footer{ display:none }
+      .wrap{ max-width:100%; margin:0; padding:0 }
+      .grid{ gap:.5rem; grid-template-columns:repeat(3,1fr) }
+      .card{ break-inside:avoid; page-break-inside:avoid; box-shadow:none; background:#fff; border:1px solid #ccc }
+      .card h2{ color:#000 }
+      li{ background:#fff; border-color:#ddd; color:#000 }
     }
   </style>
 </head>
 <body>
+  <div class="topbar">
+    <div class="topbar-inner">
+      <div class="brand"><span class="dot"></span><span>New Year’s Wedding</span></div>
+      <div class="search" aria-label="Filter by guest name">
+        <input id="filterInput" type="text" placeholder="Search guest name… (e.g., ‘Taylor’)" />
+        <button id="clearBtn" class="clear" title="Clear search">Clear</button>
+      </div>
+    </div>
+  </div>
+
   <header>
-    <h1>New Year’s Wedding — Seating Chart</h1>
-    <div class="sub">13 tables • 10 guests per table • 130 guests total</div>
+    <h1>Happy <span class="accent">New Year</span> — Seating Chart</h1>
+    <div class="sub">Type to filter by name. 13 tables • 10 guests per table • 130 total</div>
   </header>
 
   <div class="wrap">
-    <div class="controls" aria-label="Quick settings">
-      <input id="titleInput" type="text" placeholder="Change title (e.g., ‘Alex & Sam — Dec 31, 2025’)" />
-      <button id="applyTitle">Apply Title</button>
-      <button id="printBtn" title="Open print dialog">Print</button>
-    </div>
-
     <div id="grid" class="grid" role="list" aria-label="Seating tables"></div>
   </div>
 
   <footer>
-    <span class="muted">Tip: Edit the names list in the code to update your chart. It will auto‑fill 10 per table.</span>
+    <span class="muted">Tip: Edit the <strong>guestNames</strong> list in the code to update your chart. It groups 10 per table automatically.</span>
   </footer>
 
   <script>
-    // ==============================
-    // QUICK EDIT AREA — UPDATE NAMES
-    // ==============================
-    // Replace the names below with your real guest list. The page will distribute
-    // them across tables (10 per table). If you have fewer than 130 guests, it will
-    // auto-trim. If you have more, it will add additional tables as needed.
-
+    // ===== Data you can edit =====
     const guestNames = Array.from({ length: 130 }, (_, i) => `Guest ${String(i + 1).padStart(3, '0')}`);
-    // Example: const guestNames = ["Alex Morgan", "Sam Patel", "Taylor Kim", ...];
-
     const perTable = 10; // guests per table
+    const tableNames = []; // optional labels per table
 
-    // Optional: Custom table names. Leave as [] to use "Table 1", "Table 2", ...
-    const tableNames = []; // e.g., ["Gold", "Silver", "Bronze", ...]
+    // ===== Helpers =====
+    function chunk(arr, size){ const out=[]; for(let i=0;i<arr.length;i+=size) out.push(arr.slice(i,i+size)); return out; }
+    function normalize(s){ return s.toLowerCase().trim(); }
 
-    // ==============================
-    // RENDER LOGIC — DO NOT EDIT
-    // ==============================
-    function chunk(arr, size) {
-      const out = []; for (let i = 0; i < arr.length; i += size) out.push(arr.slice(i, i + size)); return out;
-    }
-
-    function render() {
+    // ===== Render all tables from the full list (10 per table) =====
+    function renderAll(){
       const grid = document.getElementById('grid');
       grid.innerHTML = '';
-
-      const totalGuests = guestNames.length;
-      const totalTables = Math.ceil(totalGuests / perTable);
-
       const groups = chunk(guestNames, perTable);
-
       groups.forEach((list, idx) => {
         const card = document.createElement('section');
         card.className = 'card';
@@ -121,7 +140,7 @@
         const h = document.createElement('h2');
         const tblNum = idx + 1;
         const label = tableNames[idx] ? tableNames[idx] : `Table ${tblNum}`;
-        h.innerHTML = `<span>${label}</span> <span class="pill">${list.length} seats</span>`;
+        h.innerHTML = `<span class="title">${label}</span> <span class="pill">${list.length} seats</span>`;
         card.appendChild(h);
 
         const ol = document.createElement('ol');
@@ -133,31 +152,59 @@
         card.appendChild(ol);
         grid.appendChild(card);
       });
+    }
 
-      // Update header subtitle
+    // ===== Live filter: highlights matches and hides non-matching tables =====
+    function clearHighlights(el){ el.querySelectorAll('mark').forEach(m => m.replaceWith(document.createTextNode(m.textContent))); }
+
+    function highlightMatch(li, q){
+      if(!q){ return; }
+      const text = li.textContent;
+      const i = text.toLowerCase().indexOf(q.toLowerCase());
+      if(i === -1){ return; }
+      li.innerHTML = '';
+      li.append(document.createTextNode(text.slice(0,i)));
+      const mark = document.createElement('mark');
+      mark.textContent = text.slice(i, i+q.length);
+      li.append(mark);
+      li.append(document.createTextNode(text.slice(i+q.length)));
+    }
+
+    function applyFilter(){
+      const q = normalize(document.getElementById('filterInput').value);
+      const cards = Array.from(document.querySelectorAll('.card'));
+      let visibleTables = 0;
+      cards.forEach(card => {
+        const lis = Array.from(card.querySelectorAll('li'));
+        let any = false;
+        lis.forEach(li => { clearHighlights(li); });
+        if(q){
+          lis.forEach(li => { if(normalize(li.textContent).includes(q)){ any = true; highlightMatch(li, q); } });
+        } else {
+          any = true; // show all when query empty
+        }
+        card.style.display = any ? '' : 'none';
+        if(any) visibleTables++;
+      });
       const sub = document.querySelector('.sub');
-      sub.textContent = `${Math.ceil(totalGuests / perTable)} tables • ${perTable} guests per table • ${totalGuests} guests total`;
+      if(q){ sub.textContent = `Filtering by "${document.getElementById('filterInput').value}" — ${visibleTables} table${visibleTables!==1?'s':''} shown`; }
+      else { sub.textContent = `Type to filter by name. 13 tables • 10 guests per table • 130 total`; }
     }
 
-    // Title controls
-    document.getElementById('applyTitle').addEventListener('click', () => {
-      const val = document.getElementById('titleInput').value.trim();
-      if (!val) return;
-      document.querySelector('h1').textContent = val;
+    // Initial render
+    renderAll();
+    applyFilter();
+
+    // As-you-type filtering
+    const filterInput = document.getElementById('filterInput');
+    filterInput.addEventListener('input', applyFilter);
+
+    // Clear button
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      filterInput.value = '';
+      filterInput.focus();
+      applyFilter();
     });
-
-    // Print button
-    document.getElementById('printBtn').addEventListener('click', () => window.print());
-
-    // Support setting title via URL hash, e.g. …/index.html#Alex%20%26%20Sam%20—%20Dec%2031,%202025
-    if (location.hash && location.hash.length > 1) {
-      try {
-        const decoded = decodeURIComponent(location.hash.slice(1));
-        if (decoded) document.querySelector('h1').textContent = decoded;
-      } catch { /* noop */ }
-    }
-
-    render();
   </script>
 </body>
 </html>
