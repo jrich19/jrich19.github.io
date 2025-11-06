@@ -67,7 +67,7 @@
   </div>
 
   <footer>
-    <span class="muted">Tip: Edit the <strong>guestNames</strong> list in the code to update your chart. It groups 10 per table automatically.</span>
+    <span class="muted">Tip: Edit the <strong>guestNames</strong> list in the code to update your chart.</span>
   </footer>
 
   <img class="mascot" src="dog.png" alt="New Year Dog Mascot" />
@@ -134,10 +134,36 @@ function renderAll(){
     function highlightMatch(li,q){if(!q)return;const text=li.textContent;const i=text.toLowerCase().indexOf(q.toLowerCase());if(i===-1)return;li.innerHTML='';li.append(document.createTextNode(text.slice(0,i)));const mark=document.createElement('mark');mark.textContent=text.slice(i,i+q.length);li.append(mark);li.append(document.createTextNode(text.slice(i+q.length)));}
     function applyFilter(){
   const q = normalize(document.getElementById('filterInput').value);
-  const cards = Array.from(document.querySelectorAll('.card')););if(q){lis.forEach(li=>{if(normalize(li.textContent).includes(q)){any=true;highlightMatch(li,q)}})}else{any=true}card.style.display=any?'':'none';if(any)visibleTables++});const sub=document.querySelector('.sub');if(q){sub.textContent=`Filtering by \"${document.getElementById('filterInput').value}\" — ${visibleTables} table${visibleTables!==1?'s':''} shown`;}else{sub.textContent=`Type to filter by name. 13 tables • 10 guests per table • 130 total`;}}
-    renderAll();applyFilter();
+  const cards = Array.from(document.querySelectorAll('.card'));
+  let visibleTables = 0;
+  cards.forEach(card => {
+    const lis = Array.from(card.querySelectorAll('li'));
+    let any = false;
+    lis.forEach(li => { clearHighlights(li); });
+    if(q){
+      lis.forEach(li => { if(normalize(li.textContent).includes(q)){ any = true; highlightMatch(li, q); } });
+    } else {
+      any = true; // show all when query empty
+    }
+    card.style.display = any ? '' : 'none';
+    if(any) visibleTables++;
+  });
+  const sub = document.getElementById('subtitle');
+  if(q){ sub.textContent = `Filtering by "${document.getElementById('filterInput').value}" — ${visibleTables} table${visibleTables!==1?'s':''} shown`; }
+  else { setSubtitleDefault(); }
+});if(q){lis.forEach(li=>{if(normalize(li.textContent).includes(q)){any=true;highlightMatch(li,q)}})}else{any=true}card.style.display=any?'':'none';if(any)visibleTables++});const sub=document.querySelector('.sub');if(q){sub.textContent=`Filtering by \"${document.getElementById('filterInput').value}\" — ${visibleTables} table${visibleTables!==1?'s':''} shown`;}else{sub.textContent=`Type to filter by name. 13 tables • 10 guests per table • 130 total`;}}
+    renderAll();
+setSubtitleDefault();
+applyFilter();
     const filterInput=document.getElementById('filterInput');filterInput.addEventListener('input',applyFilter);
     document.getElementById('clearBtn').addEventListener('click',()=>{filterInput.value='';filterInput.focus();applyFilter();});
-  </script>
+  function setSubtitleDefault(){
+  const totalTables = tableData.length;
+  const totalGuests = tableData.reduce((sum,t)=>sum + t.guests.length, 0);
+  const sub = document.getElementById('subtitle');
+  sub.textContent = `${totalTables} tables • ${totalGuests} guests total`;
+}
+
+</script>
 </body>
 </html>
